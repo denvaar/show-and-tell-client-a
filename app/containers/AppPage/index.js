@@ -7,6 +7,8 @@ import LoginPage from 'containers/LoginPage'
 import NotFoundPage from 'containers/NotFoundPage'
 import TalksListPage from 'containers/TalksListPage'
 import AuthRequiredRoute from 'containers/AuthRequiredRoute'
+import UnauthorizedPage from 'containers/UnauthorizedPage'
+import withAuthContext from 'containers/withAuthContext'
 
 
 class AppPage extends React.Component {
@@ -21,9 +23,10 @@ class AppPage extends React.Component {
     return (
       <Switch>
         <Route exact path="/" component={HomePage} />
-        <Route path="/login" component={LoginPage} />
+        <Route path="/login" component={withAuthContext(LoginPage)} />
         <AuthRequiredRoute path="/talks" component={TalksListPage} />
 
+        <Route path="/unauthorized" component={UnauthorizedPage} />
         <Route path="" component={NotFoundPage} />
       </Switch>
     )
