@@ -1,6 +1,7 @@
 import React from 'react'
 
-import { createCredentials } from 'utils/api'
+import { getUser, createCredentials } from 'utils/api'
+import clientStore from 'utils/clientStore'
 
 
 const clientId = process.env.CLIENT_ID
@@ -12,10 +13,36 @@ const AuthContext = React.createContext()
 class AuthProvider extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { isAuthenticated: false }
+    this.state = {
+      isAuthenticated: false,
+      user: null
+    }
 
     this.authenticate = this.authenticate.bind(this)
     this.unauthenticate = this.unauthenticate.bind(this)
+  }
+
+  componentWillMount() {
+    const authToken = clientStore.getAuthToken()
+
+    if (authToken) {
+      this.setState({ loading: true })
+
+      getUser(authToken)
+        .then(response => {
+          this.setState({
+            loading: false,
+            isAuthenticated: true,
+            user: {
+              name: `${response.data.first_name} ${response.data.last_name}`,
+              photo: response.data.photo
+            }
+          })
+        })
+        .catch(error => {
+          this.setState({ loading: false })
+        })
+    }
   }
 
   authenticate(authCode) {
@@ -37,22 +64,30 @@ class AuthProvider extends React.Component {
   }
 
   unauthenticate() {
-    this.setState({ isAuthenticated: false })
-    window.localStorage.removeItem('api-token');
+    this.setState({ user: null, isAuthenticated: false })
+    clientStore.removeAuthToken()
   }
 
   handleSuccessfulAuthentication(data) {
-    this.setState({ isAuthenticated: true })
-    window.localStorage.setItem('api-token', data.api_token);
+    this.setState({
+      isAuthenticated: true,
+      user: {
+        name: `${data.first_name} ${data.last_name}`,
+        photo: data.photo
+      }
+    })
+    clientStore.setAuthToken(data.api_token)
   }
 
   render() {
-    const { isAuthenticated } = this.state
+    const { isAuthenticated, loading, user } = this.state
 
     return (
       <AuthContext.Provider
         value={{
           isAuthenticated,
+          user,
+          loading,
           handleLogin: this.authenticate,
           handleLogout: this.unauthenticate
         }}

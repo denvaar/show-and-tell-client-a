@@ -15,6 +15,7 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.jsx'],
     alias: {
+      images: path.resolve(__dirname, '..', 'app/images'),
       utils: path.resolve(__dirname, '..', 'app/utils'),
       contexts: path.resolve(__dirname, '..', 'app/contexts'),
       components: path.resolve(__dirname, '..', 'app/components/'),
@@ -33,7 +34,7 @@ module.exports = {
         use: ['style-loader', 'css-loader']
       },
       {
-        test: /\.png$/,
+        test: /\.png?|\.jpg$/,
         use: ['url-loader']
       }
     ]

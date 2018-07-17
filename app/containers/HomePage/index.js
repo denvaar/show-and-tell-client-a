@@ -1,6 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
+import Home from 'components/Home'
+
 
 class HomePage extends React.Component {
   constructor(props) {
@@ -12,9 +14,7 @@ class HomePage extends React.Component {
 
   render() {
     return (
-      <div>
-        {'Home page'}
-      </div>
+      <Home />
     )
   }
 }
