@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 
 const AppWrapper = styled.div`
-  font-family: 'Rubik', sans-serif;
+  font-family: 'Lato', sans-serif;
 
   height: 100vh;
   overflow-y: hidden;
