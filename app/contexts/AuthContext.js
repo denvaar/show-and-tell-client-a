@@ -14,6 +14,7 @@ class AuthProvider extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      loading: true,
       isAuthenticated: false,
       user: null
     }
@@ -22,7 +23,7 @@ class AuthProvider extends React.Component {
     this.unauthenticate = this.unauthenticate.bind(this)
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const authToken = clientStore.getAuthToken()
 
     if (authToken) {
@@ -42,6 +43,8 @@ class AuthProvider extends React.Component {
         .catch(error => {
           this.setState({ loading: false })
         })
+    } else {
+      this.setState({ loading: false })
     }
   }
 

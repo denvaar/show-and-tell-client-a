@@ -13,7 +13,7 @@ module.exports = {
     historyApiFallback: true
   },
   resolve: {
-    extensions: ['.js', '.jsx'],
+    extensions: ['.mjs', '.js', '.jsx'],
     alias: {
       images: path.resolve(__dirname, '..', 'app/images'),
       utils: path.resolve(__dirname, '..', 'app/utils'),

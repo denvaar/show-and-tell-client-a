@@ -7,14 +7,20 @@ import { AuthConsumer } from 'contexts/AuthContext'
 const AuthRequiredRoute = ({ component: Component, ...rest }) => {
   return (
     <AuthConsumer>
-      {({ isAuthenticated }) => (
-        <div>
-          {isAuthenticated ?
-            <Route {...rest} render={props => <Component {...props} />} />
-            :
-            <Redirect to="/unauthorized" />}
-        </div>
-      )}
+      {({ isAuthenticated, loading }) => {
+        if (loading) {
+          return <div />
+        }
+
+        return (
+          <div>
+            {isAuthenticated ?
+              <Route {...rest} render={props => <Component {...props} />} />
+              :
+              <Redirect to="/unauthorized" />}
+          </div>
+        )
+      }}
     </AuthConsumer>
   )
 }
